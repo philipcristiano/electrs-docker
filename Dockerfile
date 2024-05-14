@@ -1,21 +1,24 @@
 FROM rust:1.78.0-slim-bookworm AS builder
 
-ARG VERSION=v0.10.4
-ENV REPO=https://github.com/romanz/electrs.git
+ARG VERSION=efc1fec8b0f96b5663d7257a0c2cffd8ef143219
+ENV REPO=https://github.com/blockstream/electrs.git
 
 WORKDIR /build
 
 RUN apt-get update
 RUN apt-get install -y git cargo clang cmake libsnappy-dev
 
-RUN git clone --branch $VERSION $REPO .
+#RUN git clone --branch $VERSION $REPO .
 
-RUN cargo build --release --bin electrs
+#RUN cargo build --release --bin electrs
+RUN cargo install --git "https://github.com/Blockstream/electrs.git" --root /build
+RUN ls -lah /build/
+RUN ls -lah /build/bin
 
 
 FROM debian:bookworm-slim
 
-COPY --from=builder /build/target/release/electrs /bin/electrs
+COPY --from=builder /build/bin/electrs /bin/electrs
 
 # Electrum RPC Mainnet
 EXPOSE 50001

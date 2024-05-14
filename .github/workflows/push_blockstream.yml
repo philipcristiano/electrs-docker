@@ -1,11 +1,9 @@
-name: Main Branch Deploy
+name: Blockstream Branch Deploy
 
 on:
   push:
     branches:
-      - main
-    tags:
-      - "*"
+      - blockstream
 
 jobs:
 
@@ -14,7 +12,7 @@ jobs:
     uses: "philipcristiano/workflows/.github/workflows/docker-build-push.yml@main"
 
     with:
-      repository: philipcristiano/electrs
+      repository: philipcristiano/blockstream-electrs
       timeout: 120
 
     secrets:
